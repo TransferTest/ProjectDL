@@ -96,8 +96,8 @@ public class SceneManager_conversation : MonoBehaviour {
                         GameObject newButton = GameObject.Instantiate(buttonPrefab);
                         buttons[i] = newButton;
                         newButton.transform.Translate((selectionBox.transform.position - newButton.transform.position));
-                        newButton.transform.Translate(Vector2.up * (buttons.Length - 1) * 20);
-                        newButton.transform.Translate(Vector2.up * i * (-40));
+                        newButton.transform.Translate(Vector2.up * (buttons.Length - 1) * 24);
+                        newButton.transform.Translate(Vector2.up * i * (-48));
                         newButton.transform.SetParent(selectionBox.transform);
 
                         newButton.transform.GetChild(0).GetComponentInChildren<Text>().text = root.selection[i];
