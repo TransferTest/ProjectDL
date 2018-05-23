@@ -1,4 +1,4 @@
 sceneSetups:
-- path: Assets/_Scenes/encounter.unity
+- path: Assets/_Scenes/worldMap.unity
   isLoaded: 1
   isActive: 1
