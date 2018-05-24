@@ -57,10 +57,12 @@
      <Compile Include="Assets\Scripts\CharInfo.cs" />
      <Compile Include="Assets\Scripts\Dialogue.cs" />
      <Compile Include="Assets\Scripts\GlobalControl.cs" />
+     <Compile Include="Assets\Scripts\MapTile.cs" />
      <Compile Include="Assets\Scripts\PanalContorl.cs" />
      <Compile Include="Assets\Scripts\SceneInfo.cs" />
      <Compile Include="Assets\Scripts\SceneLoader.cs" />
      <Compile Include="Assets\Scripts\SceneManagers\SceneManager_conversation.cs" />
+     <Compile Include="Assets\Scripts\SceneManagers\SceneManager_dungeon.cs" />
      <Compile Include="Assets\Scripts\SceneManagers\SceneManager_encounter.cs" />
      <Compile Include="Assets\Scripts\SceneManagers\SceneManager_load.cs" />
      <Compile Include="Assets\Scripts\SceneManagers\SceneManager_menu.cs" />
