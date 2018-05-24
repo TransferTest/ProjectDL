@@ -6,9 +6,4 @@ using UnityEngine;
 //it stores scene information
 public class SceneInfo{
     public string sceneName;//scene's name
-
-    public SceneInfo(string name)
-    {
-        sceneName = name;
-    }
 }

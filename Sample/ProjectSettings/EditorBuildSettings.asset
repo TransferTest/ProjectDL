@@ -9,9 +9,6 @@ EditorBuildSettings:
     path: Assets/_Scenes/conversation.unity
     guid: 11b5b121a3bd4c94fb93ad6a2a8b42e6
   - enabled: 1
-    path: Assets/_Scenes/dunjeon.unity
-    guid: de92fbba313a7934eb0c680cd35fea07
-  - enabled: 1
     path: Assets/_Scenes/encounter.unity
     guid: 07bf70359e6261c44ab36443dec3c8b7
   - enabled: 1
@@ -35,6 +32,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/_Scenes/store.unity
     guid: e35123e374c59f143ad09520207b6481
+  - enabled: 1
+    path: Assets/_Scenes/dungeon.unity
+    guid: de92fbba313a7934eb0c680cd35fea07
   - enabled: 1
     path: Assets/_Scenes/title.unity
     guid: d0b6a4a0319b09544af1f54f8731c819

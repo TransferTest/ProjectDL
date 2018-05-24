@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class SceneManager_dungeon : MonoBehaviour {
     public GameObject mapobj;
@@ -29,7 +30,24 @@ public class SceneManager_dungeon : MonoBehaviour {
         anim = false;
         pos_x = init_x;
         pos_y = init_y;
-        player.transform.Translate(new Vector2(start_x + w * init_x, start_y + h * init_y) - new Vector2(player.transform.position.x, player.transform.position.y));
+
+        GlobalControl gc = GameObject.Find("GlobalControl").GetComponent<GlobalControl>();//find the GlobalControl object
+        SceneInfo_dungeon si = (SceneInfo_dungeon)gc.sceneInformation;
+
+        Debug.Log("Load Scene");
+
+        if (si == null)//if there is no scene information (it might means this scene is first loaded)
+        {
+            Debug.Log("no scene information");
+        }
+        else//if there is scene information
+        {
+            loadInfo_dungeon(si);
+            Debug.Log("loaded");
+        }
+
+        player.transform.Translate(new Vector2(start_x + w * (float)pos_x, start_y + h * (float)pos_y) - new Vector2(player.transform.position.x, player.transform.position.y));
+        syncCamera();
         generateMap();
 	}
 	
@@ -42,7 +60,6 @@ public class SceneManager_dungeon : MonoBehaviour {
             if (progress >= dist)
             {
                 anim = false;
-                progress = 0;
                 player.transform.Translate(new Vector2(des_x, des_y) - new Vector2(player.transform.position.x, player.transform.position.y));
             }
             else
@@ -69,6 +86,7 @@ public class SceneManager_dungeon : MonoBehaviour {
             des_y = pre_y;
             dist = w;
             pos_x = pos_x - 1;
+            progress = 0;
         }
 
         if (Input.GetKeyDown(KeyCode.D))
@@ -84,6 +102,7 @@ public class SceneManager_dungeon : MonoBehaviour {
             des_y = pre_y;
             dist = w;
             pos_x = pos_x + 1;
+            progress = 0;
         }
 
         if (Input.GetKeyDown(KeyCode.S))
@@ -99,6 +118,7 @@ public class SceneManager_dungeon : MonoBehaviour {
             des_y = pre_y - h;
             dist = w;
             pos_y = pos_y - 1;
+            progress = 0;
         }
 
         if (Input.GetKeyDown(KeyCode.W))
@@ -114,6 +134,7 @@ public class SceneManager_dungeon : MonoBehaviour {
             des_y = pre_y + h;
             dist = w;
             pos_y = pos_y + 1;
+            progress = 0;
         }
     }
 
@@ -179,5 +200,27 @@ public class SceneManager_dungeon : MonoBehaviour {
     private void syncCamera ()
     {
         camera.transform.Translate(player.transform.position - camera.transform.position + new Vector3(0, 0, -5));
+    }
+
+    public void loadEncounter()
+    {
+        string curName = SceneManager.GetActiveScene().name;
+
+        //saves current scene information
+        GlobalControl gc = GameObject.Find("GlobalControl").GetComponent<GlobalControl>();
+        SceneInfo_dungeon curscene = new SceneInfo_dungeon();
+        curscene.pos_x = pos_x;
+        curscene.pos_y = pos_y;
+
+        gc.scenes.Push(curscene);
+        gc.sceneInformation = null;
+        gc.save();
+
+        SceneManager.LoadScene("encounter");
+    }
+    public void loadInfo_dungeon (SceneInfo_dungeon info)
+    {
+        pos_x = info.pos_x;
+        pos_y = info.pos_y;
     }
 }

@@ -30,7 +30,9 @@ public class SceneLoader : MonoBehaviour {
 
         //saves current scene information
         GlobalControl gc = GameObject.Find("GlobalControl").GetComponent<GlobalControl>();
-        gc.scenes.Push(new SceneInfo(curName));
+        SceneInfo curscene = new SceneInfo();
+        curscene.sceneName = curName;
+        gc.scenes.Push(curscene);
         gc.sceneInformation = null;
         gc.save();
 
