@@ -56,6 +56,7 @@
      <Compile Include="Assets\Scripts\Char.cs" />
      <Compile Include="Assets\Scripts\CharInfo.cs" />
      <Compile Include="Assets\Scripts\Dialogue.cs" />
+     <Compile Include="Assets\Scripts\Enemy_map.cs" />
      <Compile Include="Assets\Scripts\GlobalControl.cs" />
      <Compile Include="Assets\Scripts\MapTile.cs" />
      <Compile Include="Assets\Scripts\PanalContorl.cs" />

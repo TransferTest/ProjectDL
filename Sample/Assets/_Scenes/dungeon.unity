@@ -355,6 +355,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b08c499b680fc124ca438074070cfc51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  encounterButton: {fileID: 879890946}
+  enemy: {fileID: 1952418256735866, guid: 89684b03c7fa37b4d850de27e4724ffe, type: 2}
   mapobj: {fileID: 1040654912}
   obstacle: {fileID: 1993547680612706, guid: 9185867c7aa87ab4b9992a85fd686d39, type: 2}
   road: {fileID: 1514600299813648, guid: bbfe960d1d5d892428e0af0fa630917e, type: 2}
@@ -703,7 +705,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &879890947
 RectTransform:
   m_ObjectHideFlags: 0

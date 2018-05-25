@@ -4,6 +4,8 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class SceneManager_dungeon : MonoBehaviour {
+    public GameObject encounterButton;
+    public GameObject enemy;
     public GameObject mapobj;
     public GameObject obstacle;
     public GameObject road;
@@ -25,6 +27,8 @@ public class SceneManager_dungeon : MonoBehaviour {
 
     private MapTile[,] map;
     private Stack<MapTile> path;
+    private List<Enemy_map> enemies;
+    private bool metEnemy;
 
 	// Use this for initialization
 	void Start () {
@@ -32,6 +36,7 @@ public class SceneManager_dungeon : MonoBehaviour {
         anim = false;
         pos_x = init_x;
         pos_y = init_y;
+        metEnemy = false;
 
         GlobalControl gc = GameObject.Find("GlobalControl").GetComponent<GlobalControl>();//find the GlobalControl object
         SceneInfo_dungeon si = (SceneInfo_dungeon)gc.sceneInformation;
@@ -41,20 +46,28 @@ public class SceneManager_dungeon : MonoBehaviour {
         if (si == null)//if there is no scene information (it might means this scene is first loaded)
         {
             Debug.Log("no scene information");
+            enemies = new List<Enemy_map>();
+            enemies.Add(new Enemy_map(10, 15));
+            enemies.Add(new Enemy_map(4, 5));
+            enemies.Add(new Enemy_map(1, 7));
         }
         else//if there is scene information
         {
             loadInfo_dungeon(si);
             Debug.Log("loaded");
         }
-
+        
         player.transform.Translate(new Vector2(start_x + w * (float)pos_x, start_y + h * (float)pos_y) - new Vector2(player.transform.position.x, player.transform.position.y));
         syncCamera();
         generateMap();
+
+        setEnemies();
 	}
 	
 	// Update is called once per frame
 	void Update () {
+        if (metEnemy)
+            return;
         if (anim)
         {
             move();
@@ -166,6 +179,28 @@ public class SceneManager_dungeon : MonoBehaviour {
         }
     }
 
+    private void setEnemies()
+    {
+        for (int i = 0; i < enemies.Count; i++)
+        {
+            Enemy_map newen = enemies[i];
+            GameObject en = GameObject.Instantiate(enemy);
+            //en.transform.SetParent(mapobj.transform);
+            en.transform.Translate(new Vector2(start_x + newen.x * w, start_y + newen.y * h));
+            map[newen.x, newen.y].ch = 2;
+        }
+    }
+
+    private int checkEncounter()
+    {
+        for (int i = 0; i < enemies.Count; i++)
+        {
+            if (enemies[i].x == pos_x && enemies[i].y == pos_y)
+                return i;
+        }
+        return -1;
+    }
+
     private void generateMap ()
     {
         map = new MapTile[width, height];
@@ -202,6 +237,13 @@ public class SceneManager_dungeon : MonoBehaviour {
         {
             anim = false;
             player.transform.Translate(new Vector2(des_x, des_y) - new Vector2(player.transform.position.x, player.transform.position.y));
+            int enc = checkEncounter();
+            if (enc != -1)
+            {
+                metEnemy = true;
+                encounterButton.SetActive(true);
+                enemies.RemoveAt(enc);
+            }
         }
         else
         {
@@ -269,6 +311,9 @@ public class SceneManager_dungeon : MonoBehaviour {
             R.RemoveAt(0);
             if (cur.x == dx && cur.y == dy)
                 break;
+
+            if (cur.ch == 2)
+                continue;
 
             MapTile up = cur.up;
             MapTile down = cur.down;
@@ -353,6 +398,7 @@ public class SceneManager_dungeon : MonoBehaviour {
         SceneInfo_dungeon curscene = new SceneInfo_dungeon();
         curscene.pos_x = pos_x;
         curscene.pos_y = pos_y;
+        curscene.enemies = enemies;
 
         gc.scenes.Push(curscene);
         gc.sceneInformation = null;
@@ -364,5 +410,6 @@ public class SceneManager_dungeon : MonoBehaviour {
     {
         pos_x = info.pos_x;
         pos_y = info.pos_y;
+        enemies = info.enemies;
     }
 }
