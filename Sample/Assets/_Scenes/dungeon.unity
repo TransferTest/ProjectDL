@@ -359,11 +359,11 @@ MonoBehaviour:
   obstacle: {fileID: 1993547680612706, guid: 9185867c7aa87ab4b9992a85fd686d39, type: 2}
   road: {fileID: 1514600299813648, guid: bbfe960d1d5d892428e0af0fa630917e, type: 2}
   player: {fileID: 430992966}
-  camera: {fileID: 1756409106}
-  cam_x: 690
-  cam_y: 410
-  cam_width: 1120
-  cam_height: 1680
+  cam: {fileID: 1756409106}
+  cam_x: -50
+  cam_y: -50
+  cam_width: 2400
+  cam_height: 2400
   init_x: 2
   init_y: 2
   width: 24

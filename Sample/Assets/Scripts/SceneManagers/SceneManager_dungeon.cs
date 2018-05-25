@@ -8,7 +8,7 @@ public class SceneManager_dungeon : MonoBehaviour {
     public GameObject obstacle;
     public GameObject road;
     public GameObject player;
-    public GameObject camera;
+    public GameObject cam;
     public int cam_x, cam_y, cam_width, cam_height;
     public int init_x, init_y;
     public int width, height;
@@ -24,9 +24,11 @@ public class SceneManager_dungeon : MonoBehaviour {
     private int pos_x, pos_y;
 
     private MapTile[,] map;
+    private Stack<MapTile> path;
 
 	// Use this for initialization
 	void Start () {
+        path = new Stack<MapTile>();
         anim = false;
         pos_x = init_x;
         pos_y = init_y;
@@ -55,25 +57,47 @@ public class SceneManager_dungeon : MonoBehaviour {
 	void Update () {
         if (anim)
         {
-            Debug.Log("moving " + progress + " / " + dist);
-            progress += Time.deltaTime * walkingSpeed;
-            if (progress >= dist)
-            {
-                anim = false;
-                player.transform.Translate(new Vector2(des_x, des_y) - new Vector2(player.transform.position.x, player.transform.position.y));
-            }
-            else
-            {
-                float po_x = ((dist - progress) * pre_x + progress * des_x) / dist;
-                float po_y = ((dist - progress) * pre_y + progress * des_y) / dist;
-                player.transform.Translate(new Vector2(po_x, po_y) - new Vector2(player.transform.position.x, player.transform.position.y));
-            }
-
-            syncCamera();
+            move();
             return;
         }
         
-        if (Input.GetKeyDown(KeyCode.A))
+        if (path.Count > 0)
+        {
+            MapTile next = path.Pop();
+            
+            pre_x = player.transform.position.x;
+            pre_y = player.transform.position.y;
+
+            des_x = start_x + next.x * w;
+            des_y = start_y + next.y * h;
+
+            pos_x = next.x;
+            pos_y = next.y;
+
+            if (next.x == pos_x)
+                dist = h;
+            else
+                dist = w;
+
+            progress = 0;
+
+            anim = true;
+            return;
+        }
+
+        if (Input.GetButtonDown("Fire1"))
+        {
+            int dx, dy;
+            Vector2 v = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            dx = (int)((v.x + w / 2) / w);
+            dy = (int)((v.y + h / 2) / h);
+            if (map[dx, dy].ch == 1)
+                return;
+            findPath(dx, dy);
+            return;
+        }
+
+        if (Input.GetAxis("Hor") < 0)
         {
             if (pos_x == 0)
                 return;
@@ -87,9 +111,10 @@ public class SceneManager_dungeon : MonoBehaviour {
             dist = w;
             pos_x = pos_x - 1;
             progress = 0;
+            return;
         }
 
-        if (Input.GetKeyDown(KeyCode.D))
+        if (Input.GetAxis("Hor") > 0)
         {
             if (pos_x == width - 1)
                 return;
@@ -103,9 +128,10 @@ public class SceneManager_dungeon : MonoBehaviour {
             dist = w;
             pos_x = pos_x + 1;
             progress = 0;
+            return;
         }
 
-        if (Input.GetKeyDown(KeyCode.S))
+        if (Input.GetAxis("Ver") < 0)
         {
             if (pos_y == 0)
                 return;
@@ -119,9 +145,10 @@ public class SceneManager_dungeon : MonoBehaviour {
             dist = w;
             pos_y = pos_y - 1;
             progress = 0;
+            return;
         }
 
-        if (Input.GetKeyDown(KeyCode.W))
+        if (Input.GetAxis("Ver") > 0)
         {
             if (pos_y == height - 1)
                 return;
@@ -135,6 +162,7 @@ public class SceneManager_dungeon : MonoBehaviour {
             dist = w;
             pos_y = pos_y + 1;
             progress = 0;
+            return;
         }
     }
 
@@ -150,6 +178,8 @@ public class SceneManager_dungeon : MonoBehaviour {
                     newtile.transform.SetParent(mapobj.transform);
                     newtile.transform.Translate(new Vector2(start_x + i * w, start_y + j * h));
                     map[i, j] = new MapTile(1, newtile);
+                    map[i, j].x = i;
+                    map[i, j].y = j;
                 }
                 else
                 {
@@ -157,9 +187,30 @@ public class SceneManager_dungeon : MonoBehaviour {
                     newtile.transform.SetParent(mapobj.transform);
                     newtile.transform.Translate(new Vector2(start_x + i * w, start_y + j * h));
                     map[i, j] = new MapTile(0, newtile);
+                    map[i, j].x = i;
+                    map[i, j].y = j;
                 }
             }
         checkConnection();
+    }
+
+    private void move()
+    {
+        Debug.Log("moving " + progress + " / " + dist);
+        progress += Time.deltaTime * walkingSpeed;
+        if (progress >= dist)
+        {
+            anim = false;
+            player.transform.Translate(new Vector2(des_x, des_y) - new Vector2(player.transform.position.x, player.transform.position.y));
+        }
+        else
+        {
+            float po_x = ((dist - progress) * pre_x + progress * des_x) / dist;
+            float po_y = ((dist - progress) * pre_y + progress * des_y) / dist;
+            player.transform.Translate(new Vector2(po_x, po_y) - new Vector2(player.transform.position.x, player.transform.position.y));
+        }
+
+        syncCamera();
     }
 
     private void checkConnection ()
@@ -197,9 +248,100 @@ public class SceneManager_dungeon : MonoBehaviour {
         }
     }
     
+    private void findPath (int dx, int dy)
+    {
+        int sx = pos_x;
+        int sy = pos_y;
+
+        List<MapTile> R = new List<MapTile>();//checking
+
+        for (int i = 0; i < width; i++)
+            for (int j = 0; j < height; j++)
+            {
+                map[i, j].previous = null;
+                map[i, j].check = false;
+            }
+        map[sx, sy].check = true;
+        R.Add(map[sx, sy]);
+        while (R.Count > 0)
+        {
+            MapTile cur = R[0];
+            R.RemoveAt(0);
+            if (cur.x == dx && cur.y == dy)
+                break;
+
+            MapTile up = cur.up;
+            MapTile down = cur.down;
+            MapTile right = cur.right;
+            MapTile left = cur.left;
+
+            if (up != null)
+            {
+                if (!up.check)
+                {
+                    up.previous = cur;
+                    up.check = true;
+                    R.Add(up);
+                }
+            }
+            if (down != null)
+            {
+                if (!down.check)
+                {
+                    down.previous = cur;
+                    down.check = true;
+                    R.Add(down);
+                }
+            }
+            if (right != null)
+            {
+                if (!right.check)
+                {
+                    right.previous = cur;
+                    right.check = true;
+                    R.Add(right);
+                }
+            }
+            if (left != null)
+            {
+                if (!left.check)
+                {
+                    left.previous = cur;
+                    left.check = true;
+                    R.Add(left);
+                }
+            }
+        }
+
+        if (map[dx, dy].previous == null)
+            return;
+        MapTile d = map[dx, dy];
+        while (d != null)
+        {
+            path.Push(d);
+            d = d.previous;
+        }
+    }
+
     private void syncCamera ()
     {
-        camera.transform.Translate(player.transform.position - camera.transform.position + new Vector3(0, 0, -5));
+        cam.transform.Translate(player.transform.position - cam.transform.position + new Vector3(0, 0, -5));
+        if (cam.transform.position.x < cam_x + 640)
+        {
+            cam.transform.Translate(new Vector2(cam_x + 640, 0) - new Vector2(cam.transform.position.x, 0));
+        }
+        if (cam.transform.position.x > cam_x + cam_width - 640)
+        {
+            cam.transform.Translate(new Vector2(cam_x + cam_width - 640, 0) - new Vector2(cam.transform.position.x, 0));
+        }
+        if (cam.transform.position.y < cam_y + 360)
+        {
+            cam.transform.Translate(new Vector2(0, cam_y + 360) - new Vector2(0, cam.transform.position.y));
+        }
+        if (cam.transform.position.y > cam_y + cam_height - 360)
+        {
+            cam.transform.Translate(new Vector2(0, cam_y + cam_height - 360) - new Vector2(0, cam.transform.position.y));
+        }
     }
 
     public void loadEncounter()
