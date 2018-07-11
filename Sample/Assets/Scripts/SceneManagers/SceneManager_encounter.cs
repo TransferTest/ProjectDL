@@ -9,14 +9,19 @@ public class SceneManager_encounter : MonoBehaviour {
 
     public int num_enemies;
     public GameObject monster;
+    public GameObject monster_2;
     public int monster_HP;
-    public int monster_max;
+    public int monster_HP_2;
     public Slider monster_bar;
+    public Slider monster_bar_2;
+    public Button monster_select;
+    public Button monster_select_2;
     public Button panel_1;
     public Button panel_2;
     public Button panel_3;
     public Button panel_4;
     public Button attackButton;
+
 
     private Button[] panels;
     private int chain;
@@ -24,8 +29,14 @@ public class SceneManager_encounter : MonoBehaviour {
     private bool[] selected;
     private int cur;
 
+    private SpriteRenderer monster_sprite;
+    private SpriteRenderer monster_sprite_2;
+
     // Use this for initialization
     void Start () {
+        monster_sprite = monster.GetComponent<SpriteRenderer>();
+        monster_sprite_2 = monster_2.GetComponent<SpriteRenderer>();
+
         chain = 0;
         panels = new Button[4];
         panels[0] = panel_1;
@@ -55,8 +66,6 @@ public class SceneManager_encounter : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        monster_bar.value = monster_HP;
-
         if (chain >= 4)
         {
             selected[0] = false;
@@ -71,9 +80,6 @@ public class SceneManager_encounter : MonoBehaviour {
 
             chain = 0;
         }
-
-        if (monster_HP <= 0)
-            loadResult();
 	}
 
     //loads result scene
@@ -99,9 +105,38 @@ public class SceneManager_encounter : MonoBehaviour {
 
     public void attack()
     {
-        monster_HP -= 100;
-        chain++;
+        if (monster_HP > 0)
+            monster_select.interactable = true;
+        if (monster_HP_2 > 0)
+            monster_select_2.interactable = true;
         attackButton.interactable = false;
+    }
+    public void enemySelect(int n)
+    {
+        if (n == 1)
+            monster_HP -= 100;
+        else
+            monster_HP_2 -= 100;
+        chain++;
         selected[cur - 1] = true;
+        monster_select.interactable = false;
+        monster_select_2.interactable = false;
+
+        if (monster_HP <= 0 && monster_HP_2 <= 0)
+            loadResult();
+        if (monster_HP > 0)
+            monster_bar.value = monster_HP;
+        else
+        {
+            monster_bar.value = 0;
+            monster_sprite.color = new Color(0, 0, 0);
+        }
+        if (monster_HP_2 > 0)
+            monster_bar_2.value = monster_HP_2;
+        else
+        {
+            monster_bar_2.value = 0;
+            monster_sprite_2.color = new Color(0, 0, 0);
+        }
     }
 }
