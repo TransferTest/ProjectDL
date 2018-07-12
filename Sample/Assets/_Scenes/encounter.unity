@@ -606,6 +606,14 @@ Prefab:
       propertyPath: m_RootOrder
       value: 4
       objectReference: {fileID: 0}
+    - target: {fileID: 1952418256735866, guid: 89684b03c7fa37b4d850de27e4724ffe, type: 2}
+      propertyPath: m_Name
+      value: monster1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1952418256735866, guid: 89684b03c7fa37b4d850de27e4724ffe, type: 2}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4744496838215732, guid: 89684b03c7fa37b4d850de27e4724ffe, type: 2}
       propertyPath: m_LocalScale.x
       value: 5
@@ -613,14 +621,6 @@ Prefab:
     - target: {fileID: 4744496838215732, guid: 89684b03c7fa37b4d850de27e4724ffe, type: 2}
       propertyPath: m_LocalScale.y
       value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 4744496838215732, guid: 89684b03c7fa37b4d850de27e4724ffe, type: 2}
-      propertyPath: m_LocalScale.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1952418256735866, guid: 89684b03c7fa37b4d850de27e4724ffe, type: 2}
-      propertyPath: m_Name
-      value: monster1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 89684b03c7fa37b4d850de27e4724ffe, type: 2}
@@ -630,6 +630,23 @@ GameObject:
   m_PrefabParentObject: {fileID: 1952418256735866, guid: 89684b03c7fa37b4d850de27e4724ffe,
     type: 2}
   m_PrefabInternal: {fileID: 363089502}
+--- !u!95 &363089504
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 363089503}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 6bb5ea3065a262e469f56884867f7165, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
 --- !u!1 &422312190
 GameObject:
   m_ObjectHideFlags: 0
@@ -856,6 +873,10 @@ Prefab:
       propertyPath: m_Name
       value: monster2
       objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 08828fa5bbb90e34688d1b7b27b7b953, type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 89684b03c7fa37b4d850de27e4724ffe, type: 2}
   m_IsPrefabParent: 0
@@ -864,6 +885,23 @@ GameObject:
   m_PrefabParentObject: {fileID: 1952418256735866, guid: 89684b03c7fa37b4d850de27e4724ffe,
     type: 2}
   m_PrefabInternal: {fileID: 551290736}
+--- !u!95 &551290738
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 551290737}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 08828fa5bbb90e34688d1b7b27b7b953, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
 --- !u!1 &655611020
 GameObject:
   m_ObjectHideFlags: 0
@@ -1004,9 +1042,9 @@ MonoBehaviour:
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
-    m_HighlightedSprite: {fileID: 21300000, guid: f7e8ef4f1947d644b830118c453d95f3,
+    m_HighlightedSprite: {fileID: 21300000, guid: 42c22df17bb321a4c8e39e3ca1b5cdef,
       type: 3}
-    m_PressedSprite: {fileID: 21300000, guid: 0d4ef10c12872f44f8c852658283c4c3, type: 3}
+    m_PressedSprite: {fileID: 21300000, guid: 42527f9a2dc4b7440a859c4038839b3c, type: 3}
     m_DisabledSprite: {fileID: 21300000, guid: 76a58c0c5e279c94d915255827d44bfe, type: 3}
   m_AnimationTriggers:
     m_NormalTrigger: Normal
@@ -1947,9 +1985,9 @@ MonoBehaviour:
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
-    m_HighlightedSprite: {fileID: 21300000, guid: f7e8ef4f1947d644b830118c453d95f3,
+    m_HighlightedSprite: {fileID: 21300000, guid: 42c22df17bb321a4c8e39e3ca1b5cdef,
       type: 3}
-    m_PressedSprite: {fileID: 21300000, guid: 0d4ef10c12872f44f8c852658283c4c3, type: 3}
+    m_PressedSprite: {fileID: 21300000, guid: 42527f9a2dc4b7440a859c4038839b3c, type: 3}
     m_DisabledSprite: {fileID: 21300000, guid: 76a58c0c5e279c94d915255827d44bfe, type: 3}
   m_AnimationTriggers:
     m_NormalTrigger: Normal

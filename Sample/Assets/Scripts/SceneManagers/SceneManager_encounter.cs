@@ -32,10 +32,27 @@ public class SceneManager_encounter : MonoBehaviour {
     private SpriteRenderer monster_sprite;
     private SpriteRenderer monster_sprite_2;
 
+    private Animator monster_anim;
+    private Animator monster_anim_2;
+
+    private bool monster_attacked;
+    private bool monster_attacked_2;
+
+    private bool monster_turn;
+    private float t;
+
     // Use this for initialization
     void Start () {
+        t = 0;
+        monster_turn = false;
         monster_sprite = monster.GetComponent<SpriteRenderer>();
         monster_sprite_2 = monster_2.GetComponent<SpriteRenderer>();
+
+        monster_anim = monster.GetComponent<Animator>();
+        monster_anim_2 = monster_2.GetComponent<Animator>();
+
+        monster_attacked = false;
+        monster_attacked_2 = false;
 
         chain = 0;
         panels = new Button[4];
@@ -66,21 +83,73 @@ public class SceneManager_encounter : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+        if (monster_turn)
+        {
+            t += Time.deltaTime;
+            if (t <= 1.5 && ! monster_attacked)
+            {
+                if (monster_HP > 0)
+                {
+                    monster_anim.SetTrigger("attack");
+                    monster_attacked = true;
+                }
+                else if (monster_HP_2 > 0)
+                {
+                    monster_anim_2.SetTrigger("attack");
+                    monster_attacked_2 = true;
+                    monster_attacked = true;
+                }
+            }
+            else if (t > 1.5)
+            {
+                if (monster_HP_2 <= 0)
+                {
+                    monster_turn = false;
+                    initiallizeInteractable();
+                    return;
+                }
+                if (! monster_attacked_2)
+                {
+                    monster_anim_2.SetTrigger("attack");
+                    monster_attacked_2 = true;
+                }
+                else if (monster_HP <= 0)
+                {
+                    monster_turn = false;
+                    initiallizeInteractable();
+                    return;
+                }
+            }
+
+            if (t > 3)
+            {
+                monster_turn = false;
+                initiallizeInteractable();
+            }
+            return;
+        }
         if (chain >= 4)
         {
-            selected[0] = false;
-            selected[1] = false;
-            selected[2] = false;
-            selected[3] = false;
-
-            panel_1.interactable = true;
-            panel_2.interactable = true;
-            panel_3.interactable = true;
-            panel_4.interactable = true;
-
-            chain = 0;
+            monster_turn = true;
+            monster_attacked = false;
+            monster_attacked_2 = false;
+            t = 0;
         }
 	}
+    private void initiallizeInteractable ()
+    {
+        selected[0] = false;
+        selected[1] = false;
+        selected[2] = false;
+        selected[3] = false;
+
+        panel_1.interactable = true;
+        panel_2.interactable = true;
+        panel_3.interactable = true;
+        panel_4.interactable = true;
+
+        chain = 0;
+    }
 
     //loads result scene
     public void loadResult()
@@ -129,14 +198,16 @@ public class SceneManager_encounter : MonoBehaviour {
         else
         {
             monster_bar.value = 0;
-            monster_sprite.color = new Color(0, 0, 0);
+            //monster_sprite.color = new Color(0, 0, 0);
+            monster_anim.SetTrigger("dead");
         }
         if (monster_HP_2 > 0)
             monster_bar_2.value = monster_HP_2;
         else
         {
             monster_bar_2.value = 0;
-            monster_sprite_2.color = new Color(0, 0, 0);
+            //monster_sprite_2.color = new Color(0, 0, 0);
+            monster_anim_2.SetTrigger("dead");
         }
     }
 }
