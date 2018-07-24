@@ -24,7 +24,7 @@ public class Enemy_map{
         for (int i = 0; i < num_enemy; i ++)
         {
             monster newM = new monster();
-            newM.id = Random.Range(1, 4);
+            newM.id = Random.Range(1, 7);
             monsters.Add(newM);
         }
     }

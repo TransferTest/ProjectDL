@@ -10,6 +10,9 @@ public class SceneManager_encounter : MonoBehaviour {
     public Sprite sp1;
     public Sprite sp2;
     public Sprite sp3;
+    public Sprite sp4;
+    public Sprite sp5;
+    public Sprite sp6;
 
     public Button panel_1;
     public Button panel_2;
@@ -31,9 +34,13 @@ public class SceneManager_encounter : MonoBehaviour {
 
     private int num_enemies;
 
-    private List<monster> monsters;
+    private List<Char> party;
 
-    private List<int> targetList;
+    private List<monster> monsters;
+    private List<Animator> anims;
+    private List<Animator> player_anims;
+
+    private List<Action> actionList;
 
     private bool monster_turn;
     private bool player_turn;
@@ -45,8 +52,24 @@ public class SceneManager_encounter : MonoBehaviour {
     void Start () {
         patt = false;
         t = 0;
-        targetList = new List<int>();
+        actionList = new List<Action>();
         monster_turn = false;
+
+        anims = new List<Animator>();
+        player_anims = new List<Animator>();
+
+        party = new List<Char>();
+        party.Add(new Char());
+        party.Add(new Char());
+        party.Add(new Char());
+        party.Add(new Char());
+
+        for (int i = 0; i < 4; i++)
+        {
+            GameObject neweff = Instantiate(effectPrefab);
+            neweff.transform.Translate(new Vector3((float)(-8.9 + 2.225 + i * 4.45), (float)(-4.23), 0));
+            player_anims.Add(neweff.GetComponent<Animator>());
+        }
 
         chain = 0;
         panels = new Button[4];
@@ -84,21 +107,18 @@ public class SceneManager_encounter : MonoBehaviour {
         if (player_turn)
         {
             t += Time.deltaTime;
-            if (targetList.Count > 0)
+            if (actionList.Count > 0)
             {
                 if (!patt && t > 0.5)
                 {
                     patt = true;
-                    int tar = targetList[0];
-                    monster target = monsters[tar];
-                    target.effAnim.SetTrigger("attack");
+                    actionList[0].animate(anims, player_anims);
                 }
                 if (t > 1.3)
                 {
-                    int tar = targetList[0];
-                    targetList.RemoveAt(0);
-                    monsters[tar].HP -= 100;
-                    monsters[tar].HP_bar.value = monsters[tar].HP;
+                    Action act = actionList[0];
+                    actionList.RemoveAt(0);
+                    act.doAction();
                     t = 0;
                     patt = false;
                 }
@@ -183,7 +203,7 @@ public class SceneManager_encounter : MonoBehaviour {
         chain++;
         selected[cur - 1] = true;
 
-        targetList.Add(n);
+        actionList.Add(new Action(0, cur - 1, n, monsters, party));
 
         for (int i=0; i < num_enemies; i++)
         {
@@ -224,6 +244,8 @@ public class SceneManager_encounter : MonoBehaviour {
             monsters[i].sprite = newmon.GetComponent<SpriteRenderer>();
             monsters[i].attacked = false;
 
+            anims.Add(monsters[i].effAnim);
+
             int n = i;
             newbut.onClick.AddListener(delegate { enemySelect(n); });
 
@@ -235,9 +257,21 @@ public class SceneManager_encounter : MonoBehaviour {
             {
                 monsters[i].sprite.sprite = sp2;
             }
-            else
+            else if (monsters[i].id == 3)
             {
                 monsters[i].sprite.sprite = sp3;
+            }
+            else if (monsters[i].id == 4)
+            {
+                monsters[i].sprite.sprite = sp4;
+            }
+            else if (monsters[i].id == 5)
+            {
+                monsters[i].sprite.sprite = sp5;
+            }
+            else
+            {
+                monsters[i].sprite.sprite = sp6;
             }
         }
     }

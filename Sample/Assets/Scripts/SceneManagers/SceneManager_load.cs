@@ -83,4 +83,9 @@ public class SceneManager_load : MonoBehaviour
     {
 
     }
+
+    private void generateDummyData()
+    {
+
+    }
 }
