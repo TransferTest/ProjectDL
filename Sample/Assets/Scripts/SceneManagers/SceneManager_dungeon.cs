@@ -30,6 +30,8 @@ public class SceneManager_dungeon : MonoBehaviour {
     private List<Enemy_map> enemies;
     private bool metEnemy;
 
+    private Enemy_map encounter;
+
 	// Use this for initialization
 	void Start () {
         path = new Stack<MapTile>();
@@ -242,6 +244,7 @@ public class SceneManager_dungeon : MonoBehaviour {
             {
                 metEnemy = true;
                 encounterButton.SetActive(true);
+                encounter = enemies[enc];
                 enemies.RemoveAt(enc);
             }
         }
@@ -401,7 +404,9 @@ public class SceneManager_dungeon : MonoBehaviour {
         curscene.enemies = enemies;
 
         gc.scenes.Push(curscene);
-        gc.sceneInformation = null;
+        SceneInfo_encounter nsi = new SceneInfo_encounter();
+        nsi.monsters = encounter.monsters;
+        gc.sceneInformation = nsi;
         gc.save();
 
         SceneManager.LoadScene("encounter");

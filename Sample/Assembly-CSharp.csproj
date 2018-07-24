@@ -59,9 +59,11 @@
      <Compile Include="Assets\Scripts\Enemy_map.cs" />
      <Compile Include="Assets\Scripts\GlobalControl.cs" />
      <Compile Include="Assets\Scripts\MapTile.cs" />
+     <Compile Include="Assets\Scripts\monster.cs" />
      <Compile Include="Assets\Scripts\PanalContorl.cs" />
      <Compile Include="Assets\Scripts\SceneInfo.cs" />
      <Compile Include="Assets\Scripts\SceneInformation\SceneInfo_dungeon.cs" />
+     <Compile Include="Assets\Scripts\SceneInformation\SceneInfo_encounter.cs" />
      <Compile Include="Assets\Scripts\SceneLoader.cs" />
      <Compile Include="Assets\Scripts\SceneManagers\SceneManager_conversation.cs" />
      <Compile Include="Assets\Scripts\SceneManagers\SceneManager_dungeon.cs" />
