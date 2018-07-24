@@ -7,6 +7,10 @@ using UnityEngine.UI;
 //this is scene manager for "encounter" scene
 public class SceneManager_encounter : MonoBehaviour {
 
+    public Sprite sp1;
+    public Sprite sp2;
+    public Sprite sp3;
+
     public Button panel_1;
     public Button panel_2;
     public Button panel_3;
@@ -17,6 +21,7 @@ public class SceneManager_encounter : MonoBehaviour {
     public GameObject canvas;
     public Button buttonPrefab;
     public Slider sliderPrefab;
+    public GameObject effectPrefab;
 
     private Button[] panels;
     private int chain;
@@ -34,8 +39,11 @@ public class SceneManager_encounter : MonoBehaviour {
     private bool player_turn;
     private float t;
 
+    private bool patt;
+
     // Use this for initialization
     void Start () {
+        patt = false;
         t = 0;
         targetList = new List<int>();
         monster_turn = false;
@@ -75,12 +83,25 @@ public class SceneManager_encounter : MonoBehaviour {
 	void Update () {
         if (player_turn)
         {
+            t += Time.deltaTime;
             if (targetList.Count > 0)
             {
-                int tar = targetList[0];
-                targetList.RemoveAt(0);
-                monsters[tar].HP -= 100;
-                monsters[tar].HP_bar.value = monsters[tar].HP;
+                if (!patt && t > 0.5)
+                {
+                    patt = true;
+                    int tar = targetList[0];
+                    monster target = monsters[tar];
+                    target.effAnim.SetTrigger("attack");
+                }
+                if (t > 1.3)
+                {
+                    int tar = targetList[0];
+                    targetList.RemoveAt(0);
+                    monsters[tar].HP -= 100;
+                    monsters[tar].HP_bar.value = monsters[tar].HP;
+                    t = 0;
+                    patt = false;
+                }
             }
             else
             {
@@ -108,6 +129,7 @@ public class SceneManager_encounter : MonoBehaviour {
 
                 monster_turn = false;
                 initiallizeInteractable();
+                t = 0;
             }
         }
 	}
@@ -182,6 +204,7 @@ public class SceneManager_encounter : MonoBehaviour {
             GameObject newmon = Instantiate(monsterPrefab);
             Button newbut = Instantiate(buttonPrefab);
             Slider newsli = Instantiate(sliderPrefab);
+            GameObject neweff = Instantiate(effectPrefab);
 
             newbut.transform.SetParent(canvas.transform);
             newsli.transform.SetParent(canvas.transform);
@@ -189,8 +212,11 @@ public class SceneManager_encounter : MonoBehaviour {
             monsters[i].obj = newmon;
             monsters[i].select = newbut;
             monsters[i].HP_bar = newsli;
+            monsters[i].effect = neweff;
+            monsters[i].effAnim = neweff.GetComponent<Animator>();
 
             newmon.transform.Translate(new Vector3((float)(-((float)num_enemies - 1) * 2.5 + ((float)i) * 5), 0, 0));
+            neweff.transform.Translate(new Vector3((float)(-((float)num_enemies - 1) * 2.5 + ((float)i) * 5), 0, 0));
             newbut.transform.Translate(new Vector3((float)(-((float)num_enemies - 1) * 180 + ((float)i) * 360) + 640, 360, 0));
             newsli.transform.Translate(new Vector3((float)(-((float)num_enemies - 1) * 180 + ((float)i) * 360) + 640, 360, 0));
 
@@ -200,6 +226,19 @@ public class SceneManager_encounter : MonoBehaviour {
 
             int n = i;
             newbut.onClick.AddListener(delegate { enemySelect(n); });
+
+            if (monsters[i].id == 1)
+            {
+                monsters[i].sprite.sprite = sp1;
+            }
+            else if (monsters[i].id == 2)
+            {
+                monsters[i].sprite.sprite = sp2;
+            }
+            else
+            {
+                monsters[i].sprite.sprite = sp3;
+            }
         }
     }
 }

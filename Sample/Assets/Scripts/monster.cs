@@ -19,6 +19,9 @@ public class monster {
     public SpriteRenderer sprite;
     public Animator anim;
 
+    public GameObject effect;
+    public Animator effAnim;
+
     public GameObject obj;
 
     public bool attacked;
