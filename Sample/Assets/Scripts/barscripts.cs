@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class barscripts : MonoBehaviour {
+    //나중에 캐릭터 정보 저장되면 거기서 값 가져오는 것으로 변경 필요
 
     private float fillAmount; //바가 차있는 비율
     private Text text; //바 위에 표시될 텍스트
@@ -17,42 +18,45 @@ public class barscripts : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+        string HP = "100";
+        string MP = "100";
+        string nowEXP = "30";
+        string nextEXP = "100";
         
-        string setwhat = gameObject.name; //이 스크립트가 속해있는 이미지가 HP인지 MP인지 EXP인지 구분하기 위해 이름을 가져왔습니다.
-        string[] what = setwhat.Split(new char[] { '_' }); //이름에서 앞부분만 챙겨와서 what[0]에는 HP,MP,EXP 중 하나가 들어갈 것입니다.
+        string setwhat = gameObject.name;
+        string[] what = setwhat.Split(new char[] { '_' });
+
 
         content = GameObject.Find(what[0]).GetComponent<Image>(); //그래서 그 이름을 가지고 필요한 바를 찾고
         text = GameObject.Find("ValueText"+what[0]).GetComponent<Text>(); //그 바 위에 표시되는 텍스트 박스를 찾습니다.
 
         if(what[0] == "HP")
         {
-            now_value = 100;
-            max_value = 100;
-        }else if(what[0] == "MP")
-        {
-            now_value = 100;
-            max_value = 100;
-        }else if(what[0] == "EXP")
-        {
-            now_value = 30;
-            max_value = 100;
+            now_value = int.Parse(HP);
+            max_value = int.Parse(HP);
         }
-
-
-       
-
+        else if(what[0] == "MP")
+        {
+            now_value = int.Parse(MP);
+            max_value = int.Parse(MP);
+        }
+        else if(what[0] == "EXP")
+        {
+            now_value = int.Parse(nowEXP);
+            max_value = int.Parse(nextEXP);
+        }
 
     }
 
     // Update is called once per frame
     void Update () {
-        HandleBar(); //매 프레임마다 바 길이를 조절합니다. 후에 now_value를 Update에서 조절하면 될 것 같습니다.
-        text.text = now_value + " / " + max_value; //전형적인 HP스테이터스 보여주기 입니다.
+        HandleBar();
+        text.text = now_value + " / " + max_value;
 	}
     
     private void HandleBar()
     {
-        fillAmount = now_value / max_value; //현재값을 최대값으로 나누어서 비율을 찾습니다. 최대가 1이고 최소가 0인건 나중에.....
+        fillAmount = now_value / max_value; //최대가 1이고 최소가 0인건 나중에.....
         content.fillAmount = fillAmount;
     }
 
