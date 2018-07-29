@@ -62,6 +62,7 @@
      <Compile Include="Assets\Scripts\MapTile.cs" />
      <Compile Include="Assets\Scripts\monster.cs" />
      <Compile Include="Assets\Scripts\PanalContorl.cs" />
+     <Compile Include="Assets\Scripts\PanelScript.cs" />
      <Compile Include="Assets\Scripts\SceneInfo.cs" />
      <Compile Include="Assets\Scripts\SceneInformation\SceneInfo_dungeon.cs" />
      <Compile Include="Assets\Scripts\SceneInformation\SceneInfo_encounter.cs" />

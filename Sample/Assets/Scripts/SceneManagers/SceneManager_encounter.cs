@@ -14,10 +14,16 @@ public class SceneManager_encounter : MonoBehaviour {
     public Sprite sp5;
     public Sprite sp6;
 
-    public Button panel_1;
-    public Button panel_2;
-    public Button panel_3;
-    public Button panel_4;
+    public GameObject player_1;
+    public GameObject player_2;
+    public GameObject player_3;
+    public GameObject player_4;
+    private PanelScript[] player_panels;
+
+    private Button panel_1;
+    private Button panel_2;
+    private Button panel_3;
+    private Button panel_4;
     public Button attackButton;
 
     public GameObject monsterPrefab;
@@ -47,9 +53,16 @@ public class SceneManager_encounter : MonoBehaviour {
     private float t;
 
     private bool patt;
+    private bool matt;
+    private int mtar;
+
+    public int num_party;
+
+    private int monster_attacking;
 
     // Use this for initialization
     void Start () {
+        monster_attacking = 0;
         patt = false;
         t = 0;
         actionList = new List<Action>();
@@ -58,11 +71,16 @@ public class SceneManager_encounter : MonoBehaviour {
         anims = new List<Animator>();
         player_anims = new List<Animator>();
 
-        party = new List<Char>();
-        party.Add(new Char());
-        party.Add(new Char());
-        party.Add(new Char());
-        party.Add(new Char());
+        player_panels = new PanelScript[4];
+        player_panels[0] = player_1.GetComponent<PanelScript>();
+        player_panels[1] = player_2.GetComponent<PanelScript>();
+        player_panels[2] = player_3.GetComponent<PanelScript>();
+        player_panels[3] = player_4.GetComponent<PanelScript>();
+
+        panel_1 = player_1.transform.Find("PanelButton").GetComponent<Button>();
+        panel_2 = player_2.transform.Find("PanelButton").GetComponent<Button>();
+        panel_3 = player_3.transform.Find("PanelButton").GetComponent<Button>();
+        panel_4 = player_4.transform.Find("PanelButton").GetComponent<Button>();
 
         for (int i = 0; i < 4; i++)
         {
@@ -99,7 +117,14 @@ public class SceneManager_encounter : MonoBehaviour {
             loadInfo_encounter(si);
             Debug.Log("loaded");
         }
-        
+        party = gc.charInformation.party;
+        num_party = party.Count;
+        for (int i = 0; i < 4; i++)
+        {
+            player_panels[i].initiallize(party[i].HP_max, party[i].MP_max);
+            player_panels[i].setHP(party[i].HP);
+            player_panels[i].setMP(party[i].MP);
+        }
     }
 	
 	// Update is called once per frame
@@ -127,6 +152,8 @@ public class SceneManager_encounter : MonoBehaviour {
             {
                 player_turn = false;
                 monster_turn = true;
+                matt = false;
+                monster_attacking = 0;
                 chain = 0;
                 t = 0;
             }
@@ -134,8 +161,10 @@ public class SceneManager_encounter : MonoBehaviour {
         else if (monster_turn)
         {
             t += Time.deltaTime;
-            if (t > 3)
+            if (!matt && t > 0.5)
             {
+                matt = true;
+                //check
                 bool result = true;
 
                 for (int i = 0; i < num_enemies; i++)
@@ -145,11 +174,40 @@ public class SceneManager_encounter : MonoBehaviour {
                 }
 
                 if (result)
+                {
                     loadResult();
+                    return;
+                }
 
-                monster_turn = false;
-                initiallizeInteractable();
+                if (monster_attacking >= monsters.Count)
+                {
+                    monster_turn = false;
+                    initiallizeInteractable();
+                    t = 0;
+                    return;
+                }
+                if (monsters[monster_attacking].HP <= 0)
+                {
+                    monster_attacking++;
+                    t = 0;
+                    matt = false;
+                    return;
+                }
+                do
+                {
+                    mtar = Random.Range(0, 4);
+                } while (party[mtar].HP <= 0);
+
+                player_anims[mtar].SetTrigger("attack");
+                anims[monster_attacking].SetTrigger("heal");
+            }
+            if (t > 1.3)
+            {
+                matt = false;
+                party[mtar].HP -= 10;
+                player_panels[mtar].setHP(party[mtar].HP);
                 t = 0;
+                monster_attacking++;
             }
         }
 	}

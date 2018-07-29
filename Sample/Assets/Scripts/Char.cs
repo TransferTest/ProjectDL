@@ -20,8 +20,8 @@ public class Char{
     {
         name = "dummy";//this character's name will be "dummy" if you don't set name
         id = 0;
-        HP = 100;
-        HP_max = 100;
+        HP = 90;
+        HP_max = 90;
         MP = 10;
         MP_max = 10;
         exp = 30;

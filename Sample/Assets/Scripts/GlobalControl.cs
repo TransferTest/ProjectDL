@@ -25,7 +25,10 @@ public class GlobalControl : MonoBehaviour
             scenes = new Stack<SceneInfo>();
         charInformation = GlobalControl.Instance.charInformation;
         if (charInformation == null)
+        {
+            Debug.Log("Hello!");
             charInformation = new CharInfo();
+        }
         sceneInformation = GlobalControl.Instance.sceneInformation;
     }
 

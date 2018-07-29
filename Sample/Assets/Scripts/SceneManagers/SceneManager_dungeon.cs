@@ -25,6 +25,8 @@ public class SceneManager_dungeon : MonoBehaviour {
     private bool anim;
     private int pos_x, pos_y;
 
+    private SpriteRenderer p_sprite;
+
     private MapTile[,] map;
     private Stack<MapTile> path;
     private List<Enemy_map> enemies;
@@ -34,6 +36,8 @@ public class SceneManager_dungeon : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+        p_sprite = player.GetComponentInChildren<SpriteRenderer>();
+
         path = new Stack<MapTile>();
         anim = false;
         pos_x = init_x;
@@ -233,12 +237,21 @@ public class SceneManager_dungeon : MonoBehaviour {
 
     private void move()
     {
+        if (des_x - pre_x > 0.01)
+        {
+            p_sprite.flipX = false;
+        }
+        else if (des_x - pre_x < -0.01)
+        {
+            p_sprite.flipX = true;
+        }
         Debug.Log("moving " + progress + " / " + dist);
         progress += Time.deltaTime * walkingSpeed;
         if (progress >= dist)
         {
             anim = false;
-            player.transform.Translate(new Vector2(des_x, des_y) - new Vector2(player.transform.position.x, player.transform.position.y));
+            if (path.Count == 0)
+                player.transform.Translate(new Vector2(des_x, des_y) - new Vector2(player.transform.position.x, player.transform.position.y));
             int enc = checkEncounter();
             if (enc != -1)
             {
@@ -369,6 +382,7 @@ public class SceneManager_dungeon : MonoBehaviour {
             path.Push(d);
             d = d.previous;
         }
+        path.Pop();
     }
 
     private void syncCamera ()
