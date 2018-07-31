@@ -15,7 +15,7 @@ public class Char{
     public int HP, MP;//character's current status
     public int HP_max, MP_max;//character's maximum status
     public int ATK, AGI, CRI, INT, DEF;//character's status
-    public int requiredMP;
+    public int requiredMP, requiredHP;
     //initiallize
     public Char ()
     {
@@ -33,6 +33,7 @@ public class Char{
         INT = 10;
         CRI = 10;
         requiredMP = 16;
+        requiredHP = 0;
     }
 
     public int type_skill ()//해당 캐릭터의 스킬이 적 대상인지 아군 대상인지 논타겟인지 알려줍니다. 0->적, 1->아군, 2->논타겟
@@ -49,6 +50,7 @@ public class Char{
     public void skill(List<monster> monsters, List<Char> party, int target)
     {
         MP -= requiredMP;
+        HP -= requiredHP;
         if (id == 0)
         {
             skill_00(monsters, party, target);

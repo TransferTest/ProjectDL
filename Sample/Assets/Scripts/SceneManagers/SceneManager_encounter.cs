@@ -286,7 +286,7 @@ public class SceneManager_encounter : MonoBehaviour {
             }
             panels[n - 1].interactable = false;
             attackButton.interactable = true;
-            if (party[n - 1].MP >= party[n - 1].requiredMP)
+            if (party[n - 1].MP >= party[n - 1].requiredMP && party[n - 1].HP >= party[n - 1].requiredHP)
                 skillButton.interactable = true;
             cur = n;
         }
