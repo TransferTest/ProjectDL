@@ -86,7 +86,7 @@ public class SkillPanel : MonoBehaviour {
         {
             
             Skill temp = new Skill();
-            Sprite imageTemp = new Sprite();
+            Sprite imageTemp =  Resources.Load<Sprite>("Test");
 
             temp.Name = Skills.Key;
             temp.detail = Skills.Value;
@@ -114,7 +114,7 @@ public class SkillPanel : MonoBehaviour {
         {
             
             Skill temp = new Skill();
-            Sprite imageTemp = new Sprite();
+            Sprite imageTemp = Resources.Load<Sprite>("Test");
 
             temp.Name = Skills.Key;
             temp.detail = Skills.Value;
