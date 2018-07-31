@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class SceneManager_dungeon : MonoBehaviour {
+    public GameObject cursor;
     public GameObject encounterButton;
     public GameObject enemy;
     public GameObject mapobj;
@@ -103,13 +104,15 @@ public class SceneManager_dungeon : MonoBehaviour {
             anim = true;
             return;
         }
-
+        int dx, dy;
+        Vector2 v = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        dx = (int)((v.x + w / 2) / w);
+        dy = (int)((v.y + h / 2) / h);
+        cursor.transform.Translate(new Vector3(start_x + dx * w, start_y + dy * h, -4) - cursor.transform.position);
         if (Input.GetButtonDown("Fire1"))
         {
-            int dx, dy;
-            Vector2 v = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            dx = (int)((v.x + w / 2) / w);
-            dy = (int)((v.y + h / 2) / h);
+            if (dx >= width || dy >= height || dx <= 0 || dy <= 0)
+                return;
             if (map[dx, dy].ch == 1)
                 return;
             findPath(dx, dy);
