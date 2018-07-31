@@ -15,6 +15,7 @@ public class Char{
     public int HP, MP;//character's current status
     public int HP_max, MP_max;//character's maximum status
     public int ATK, AGI, CRI, INT, DEF;//character's status
+    public int requiredMP;
     //initiallize
     public Char ()
     {
@@ -22,8 +23,8 @@ public class Char{
         id = 0;
         HP = 90;
         HP_max = 90;
-        MP = 10;
-        MP_max = 10;
+        MP = 60;
+        MP_max = 60;
         exp = 30;
         exp_next = 100;
         ATK = 10;
@@ -31,6 +32,7 @@ public class Char{
         DEF = 10;
         INT = 10;
         CRI = 10;
+        requiredMP = 16;
     }
 
     public int type_skill ()//해당 캐릭터의 스킬이 적 대상인지 아군 대상인지 논타겟인지 알려줍니다. 0->적, 1->아군, 2->논타겟
@@ -46,6 +48,7 @@ public class Char{
 
     public void skill(List<monster> monsters, List<Char> party, int target)
     {
+        MP -= requiredMP;
         if (id == 0)
         {
             skill_00(monsters, party, target);
@@ -76,7 +79,7 @@ public class Char{
 
     private void skill_01 (List<monster> monsters, List<Char> party, int target)//1번 캐릭터의 스킬입니다. 아군에게 쓰는 스킬입니다.
     {
-        party[target].HP += 100;
+        party[target].HP += 10;
         if (party[target].HP > party[target].HP_max)
             party[target].HP = party[target].HP_max;
         Debug.Log("skill 1");

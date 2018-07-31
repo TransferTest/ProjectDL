@@ -228,6 +228,7 @@ public class SceneManager_encounter : MonoBehaviour {
         for (int i = 0; i < party.Count; i++)
         {
             player_panels[i].setHP(party[i].HP);
+            player_panels[i].setMP(party[i].MP);
         }
     }
 
@@ -285,7 +286,8 @@ public class SceneManager_encounter : MonoBehaviour {
             }
             panels[n - 1].interactable = false;
             attackButton.interactable = true;
-            skillButton.interactable = true;
+            if (party[n - 1].MP >= party[n - 1].requiredMP)
+                skillButton.interactable = true;
             cur = n;
         }
     }
