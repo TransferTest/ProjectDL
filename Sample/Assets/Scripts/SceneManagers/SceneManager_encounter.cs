@@ -6,7 +6,6 @@ using UnityEngine.UI;
 
 //this is scene manager for "encounter" scene
 public class SceneManager_encounter : MonoBehaviour {
-
     public Sprite sp1;
     public Sprite sp2;
     public Sprite sp3;
@@ -91,7 +90,8 @@ public class SceneManager_encounter : MonoBehaviour {
         for (int i = 0; i < 4; i++)
         {
             GameObject neweff = Instantiate(effectPrefab);
-            neweff.transform.Translate(new Vector3((float)(-8.9 + 2.225 + i * 4.45), (float)(-4.23), 0));
+            neweff.transform.SetParent(canvas.transform);
+            neweff.transform.Translate(new Vector3((float)(-480 + i * 320) + 640, 60, 0));
             player_anims.Add(neweff.GetComponent<Animator>());
         }
 
@@ -206,7 +206,7 @@ public class SceneManager_encounter : MonoBehaviour {
                 } while (party[mtar].HP <= 0);
 
                 player_anims[mtar].SetTrigger("attack");
-                anims[monster_attacking].SetTrigger("heal");
+                anims[monster_attacking].SetTrigger("skill");
             }
             if (t > 1.3)
             {
@@ -258,16 +258,17 @@ public class SceneManager_encounter : MonoBehaviour {
     {
         if (ptarget)
         {
+            chain++;
+            selected[cur - 1] = true;
             for (int i = 0; i < 4; i++)
             {
                 if (selected[i])
                     panels[i].interactable = false;
-                panels[i].interactable = true;
+                else
+                    panels[i].interactable = true;
             }
-            chain++;
-            selected[cur - 1] = true;
+            actionList.Add(new Action(curAct, cur - 1, n - 1, monsters, party));
 
-            actionList.Add(new Action(curAct, cur - 1, n, monsters, party));
             if (chain >= 4)
             {
                 player_turn = true;
@@ -303,10 +304,23 @@ public class SceneManager_encounter : MonoBehaviour {
 
     public void skill()
     {
-        for (int i = 0; i < num_enemies; i++)
+        int type_skill = party[cur - 1].type_skill();
+        if (type_skill == 1)
         {
-            if (monsters[i].HP > 0)
-                monsters[i].select.interactable = true;
+            ptarget = true;
+            for (int i = 0; i < 4; i++)
+            {
+                panels[i].interactable = true;
+            }
+        }
+        else
+        {
+            ptarget = false;
+            for (int i = 0; i < num_enemies; i++)
+            {
+                if (monsters[i].HP > 0)
+                    monsters[i].select.interactable = true;
+            }
         }
         attackButton.interactable = false;
         skillButton.interactable = false;
@@ -341,6 +355,7 @@ public class SceneManager_encounter : MonoBehaviour {
             Slider newsli = Instantiate(sliderPrefab);
             GameObject neweff = Instantiate(effectPrefab);
 
+            neweff.transform.SetParent(canvas.transform);
             newbut.transform.SetParent(canvas.transform);
             newsli.transform.SetParent(canvas.transform);
 
@@ -351,7 +366,7 @@ public class SceneManager_encounter : MonoBehaviour {
             monsters[i].effAnim = neweff.GetComponent<Animator>();
 
             newmon.transform.Translate(new Vector3((float)(-((float)num_enemies - 1) * 2.5 + ((float)i) * 5), 0, 0));
-            neweff.transform.Translate(new Vector3((float)(-((float)num_enemies - 1) * 2.5 + ((float)i) * 5), 0, 0));
+            neweff.transform.Translate(new Vector3((float)(-((float)num_enemies - 1) * 180 + ((float)i) * 360) + 640, 400, 0));
             newbut.transform.Translate(new Vector3((float)(-((float)num_enemies - 1) * 180 + ((float)i) * 360) + 640, 360, 0));
             newsli.transform.Translate(new Vector3((float)(-((float)num_enemies - 1) * 180 + ((float)i) * 360) + 640, 360, 0));
 

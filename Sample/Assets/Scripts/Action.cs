@@ -23,7 +23,7 @@ public class Action{
         if (actionId == 0)
         {
             effect_monster[target].SetTrigger("attack");
-            effect_nakama[who].SetTrigger("heal");
+            effect_nakama[who].SetTrigger("skill");
         }
         else if (actionId == 1)
         {
@@ -31,12 +31,12 @@ public class Action{
             if (stype == 0)
             {
                 effect_monster[target].SetTrigger("attack");
-                effect_nakama[who].SetTrigger("heal");
+                effect_nakama[who].SetTrigger("skill");
             }
             else if (stype == 1)
             {
-                effect_nakama[target].SetTrigger("attack");
-                effect_nakama[who].SetTrigger("heal");
+                effect_nakama[target].SetTrigger("heal");
+                effect_nakama[who].SetTrigger("skill");
             }
             else
             {
@@ -44,7 +44,7 @@ public class Action{
                 {
                     effect_monster[i].SetTrigger("attack");
                 }
-                effect_nakama[who].SetTrigger("heal");
+                effect_nakama[who].SetTrigger("skill");
             }
         }
     }
