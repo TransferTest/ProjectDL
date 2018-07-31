@@ -2068,8 +2068,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_MethodName: loadBack
+      - m_Target: {fileID: 2096035872}
+        m_MethodName: skill
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2677,6 +2677,7 @@ MonoBehaviour:
   player_3: {fileID: 1263968039}
   player_4: {fileID: 1839135461}
   attackButton: {fileID: 422312192}
+  skillButton: {fileID: 1774575288}
   monsterPrefab: {fileID: 1149188366579220, guid: bc8c762904fa3d14da1b58b5ac67afdb,
     type: 2}
   canvas: {fileID: 1886147483}

@@ -25,6 +25,28 @@ public class Action{
             effect_monster[target].SetTrigger("attack");
             effect_nakama[who].SetTrigger("heal");
         }
+        else if (actionId == 1)
+        {
+            int stype = party[who].type_skill();
+            if (stype == 0)
+            {
+                effect_monster[target].SetTrigger("attack");
+                effect_nakama[who].SetTrigger("heal");
+            }
+            else if (stype == 1)
+            {
+                effect_nakama[target].SetTrigger("attack");
+                effect_nakama[who].SetTrigger("heal");
+            }
+            else
+            {
+                for (int i = 0; i < monsters.Count; i++)
+                {
+                    effect_monster[i].SetTrigger("attack");
+                }
+                effect_nakama[who].SetTrigger("heal");
+            }
+        }
     }
 
     public void doAction()
@@ -32,7 +54,11 @@ public class Action{
         if (actionId == 0)
         {
             monsters[target].HP -= 100;
-            monsters[target].HP_bar.value = monsters[target].HP;
+            //monsters[target].HP_bar.value = monsters[target].HP;
+        }
+        if (actionId == 1)
+        {
+            party[who].skill(monsters, party, target);
         }
     }
 }

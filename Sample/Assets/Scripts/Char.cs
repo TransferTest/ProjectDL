@@ -44,7 +44,7 @@ public class Char{
         return 2;
     }
 
-    public void skill_target(List<monster> monsters, List<Char> party, int target)
+    public void skill(List<monster> monsters, List<Char> party, int target)
     {
         if (id == 0)
         {
@@ -71,6 +71,7 @@ public class Char{
     private void skill_00 (List<monster> monsters, List<Char> party, int target)//0번 캐릭터의 스킬입니다. 적에게 쓰는 스킬입니다.
     {
         monsters[target].HP -= 200;
+        Debug.Log("skill 0");
     }
 
     private void skill_01 (List<monster> monsters, List<Char> party, int target)//1번 캐릭터의 스킬입니다. 아군에게 쓰는 스킬입니다.
@@ -78,6 +79,7 @@ public class Char{
         party[target].HP += 100;
         if (party[target].HP > party[target].HP_max)
             party[target].HP = party[target].HP_max;
+        Debug.Log("skill 1");
     }
 
     private void skill_02(List<monster> monsters, List<Char> party, int target)//2번 캐릭터의 스킬입니다. 적에게 쓰는 스킬입니다.
@@ -86,11 +88,13 @@ public class Char{
         HP += 40;
         if (HP > HP_max)
             HP = HP_max;
+        Debug.Log("skill 2");
     }
 
     private void skill_03(List<monster> monsters, List<Char> party)//3번 캐릭터의 스킬입니다. 논타겟 스킬입니다.
     {
         for (int i = 0; i < monsters.Count; i++)
             monsters[i].HP -= 110;
+        Debug.Log("skill 3");
     }
 }
