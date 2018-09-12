@@ -268,7 +268,7 @@ public class SceneManager_encounter : MonoBehaviour {
                 else
                     panels[i].interactable = true;
             }
-            actionList.Add(new Action(curAct, cur - 1, n - 1, monsters, party));
+            actionList.Add(new Action(curAct, cur - 1, n - 1, monsters, party, null));
 
             if (chain >= 4)
             {
@@ -315,13 +315,30 @@ public class SceneManager_encounter : MonoBehaviour {
                 panels[i].interactable = true;
             }
         }
-        else
+        else if (type_skill == 0)
         {
             ptarget = false;
             for (int i = 0; i < num_enemies; i++)
             {
                 if (monsters[i].HP > 0)
                     monsters[i].select.interactable = true;
+            }
+        }
+        else
+        {
+            ptarget = false;
+            chain++;
+            selected[cur - 1] = true;
+
+            actionList.Add(new Action(1, cur - 1, 0, monsters, party, null));
+
+            for (int i = 0; i < num_enemies; i++)
+            {
+                monsters[i].select.interactable = false;
+            }
+            if (chain >= 4)
+            {
+                player_turn = true;
             }
         }
         attackButton.interactable = false;
@@ -334,7 +351,7 @@ public class SceneManager_encounter : MonoBehaviour {
         chain++;
         selected[cur - 1] = true;
 
-        actionList.Add(new Action(curAct, cur - 1, n, monsters, party));
+        actionList.Add(new Action(curAct, cur - 1, n, monsters, party, null));
 
         for (int i=0; i < num_enemies; i++)
         {

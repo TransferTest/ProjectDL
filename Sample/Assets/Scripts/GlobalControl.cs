@@ -12,6 +12,7 @@ public class GlobalControl : MonoBehaviour
 
     public SceneInfo sceneInformation;//current scene information
     public CharInfo charInformation;//current character information
+    public Item[,] inven;//current inventory
 
     public string text;//text for testing whether it is still alive
 
@@ -30,6 +31,10 @@ public class GlobalControl : MonoBehaviour
             charInformation = new CharInfo();
         }
         sceneInformation = GlobalControl.Instance.sceneInformation;
+        inven = new Item[10, 5];
+        for (int i = 0; i < 10; i++)
+            for (int j = 0; j < 5; j++)
+                inven[i, j] = new Item();
     }
 
     //I don't know what it is
@@ -54,6 +59,7 @@ public class GlobalControl : MonoBehaviour
         GlobalControl.Instance.scenes = scenes;
         GlobalControl.Instance.sceneInformation = sceneInformation;
         GlobalControl.Instance.charInformation = charInformation;
+        GlobalControl.Instance.inven = inven;
     }
 
     //resets all informations
@@ -66,6 +72,7 @@ public class GlobalControl : MonoBehaviour
         GlobalControl.Instance.scenes = new Stack<SceneInfo>();
         GlobalControl.Instance.sceneInformation = null;
         GlobalControl.Instance.charInformation = null;
+        GlobalControl.Instance.inven = null;
 
         text = GlobalControl.Instance.text;
         scenes = GlobalControl.Instance.scenes;
@@ -74,5 +81,6 @@ public class GlobalControl : MonoBehaviour
         if (charInformation == null)
             charInformation = new CharInfo();
         sceneInformation = GlobalControl.Instance.sceneInformation;
+        inven = new Item[10, 5];
     }
 }

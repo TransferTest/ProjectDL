@@ -6,16 +6,18 @@ public class Action{
     private int actionId;//0: attack, 1: skill, 2: item...
     private int who;
     private int target;
+    private Item it;
     private List<monster> monsters;
     private List<Char> party;
 
-    public Action (int id, int who, int target, List<monster> monsters, List<Char> party)
+    public Action (int id, int who, int target, List<monster> monsters, List<Char> party, Item it)
     {
         actionId = id;
         this.who = who;
         this.target = target;
         this.monsters = monsters;
         this.party = party;
+        this.it = it;
     }
 
     public void animate(List<Animator> effect_monster, List<Animator> effect_nakama)
