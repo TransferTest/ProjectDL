@@ -9,6 +9,10 @@ public class SceneManager_menu : MonoBehaviour {
 
     private GameObject[] buttons;
     public GameObject ask;
+
+    public GameObject Status;
+    public GameObject Skill;
+
     public int buttonnumber = 8;
 
 	// Use this for initialization
@@ -20,6 +24,13 @@ public class SceneManager_menu : MonoBehaviour {
             string name = "Button (" + i.ToString() + ")";
             buttons[i] = GameObject.Find(name);
         }
+
+       // Status = GameObject.Find("Status_Panel");
+        Status.SetActive(false);
+
+        //Skill = GameObject.Find("Skill_Panel");
+        Skill.SetActive(false);
+
     }
 	
 	// Update is called once per frame
@@ -71,4 +82,23 @@ public class SceneManager_menu : MonoBehaviour {
         gc.reset();
         SceneManager.LoadScene("title");
     }
+
+    public void disactiveOthers()
+    {
+        Status.SetActive(false);
+        Skill.SetActive(false);
+    }
+
+    public void StatusButton()
+    {
+        disactiveOthers();
+        Status.SetActive(true);
+    }
+
+    public void SkillButton()
+    {
+        disactiveOthers();
+        Skill.SetActive(true);
+    }
+
 }
