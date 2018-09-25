@@ -12,6 +12,7 @@ public class SceneManager_menu : MonoBehaviour {
 
     public GameObject Status;
     public GameObject Skill;
+    public GameObject Item;
 
     public int buttonnumber = 8;
 
@@ -30,7 +31,7 @@ public class SceneManager_menu : MonoBehaviour {
 
         //Skill = GameObject.Find("Skill_Panel");
         Skill.SetActive(false);
-
+        Item.SetActive(false);
     }
 	
 	// Update is called once per frame
@@ -87,6 +88,7 @@ public class SceneManager_menu : MonoBehaviour {
     {
         Status.SetActive(false);
         Skill.SetActive(false);
+        Item.SetActive(false);
     }
 
     public void StatusButton()
@@ -99,6 +101,12 @@ public class SceneManager_menu : MonoBehaviour {
     {
         disactiveOthers();
         Skill.SetActive(true);
+    }
+
+    public void ItemButton()
+    {
+        disactiveOthers();
+        Item.SetActive(true);
     }
 
 }

@@ -12,7 +12,7 @@ public class GlobalControl : MonoBehaviour
 
     public SceneInfo sceneInformation;//current scene information
     public CharInfo charInformation;//current character information
-    public Item[,] inven;//current inventory
+    public Item[] inven;//current inventory
 
     public string text;//text for testing whether it is still alive
 
@@ -31,10 +31,17 @@ public class GlobalControl : MonoBehaviour
             charInformation = new CharInfo();
         }
         sceneInformation = GlobalControl.Instance.sceneInformation;
-        inven = new Item[10, 5];
-        for (int i = 0; i < 10; i++)
-            for (int j = 0; j < 5; j++)
-                inven[i, j] = new Item();
+        inven = new Item[10];
+        for (int i = 0; i < 5; i++)
+        {
+            string j = i.ToString();
+            inven[i] = new Item(1, i, j, j);
+        }
+        for (int i = 5; i < 10; i++)
+        {
+            string j = i.ToString();
+            inven[i] = new Item(3, i, j, j);
+        }
     }
 
     //I don't know what it is
@@ -81,6 +88,6 @@ public class GlobalControl : MonoBehaviour
         if (charInformation == null)
             charInformation = new CharInfo();
         sceneInformation = GlobalControl.Instance.sceneInformation;
-        inven = new Item[10, 5];
+        inven = new Item[10];
     }
 }
