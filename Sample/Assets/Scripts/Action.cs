@@ -9,7 +9,24 @@ public class Action{
     private Item it;
     private List<monster> monsters;
     private List<Char> party;
-
+    List<List<float>> teff= new List<List<float>>() {
+            new List<float> { 1f, 0.5f, 1.5f, 1f, 1f, 1f, 1.5f, 1.5f, 1f, 1f, 1.5f, 1f, 1f, 1.5f, 1f, 0.5f }, // Fire
+            new List<float> { 1.5f, 1f, 0.5f, 1f, 1f, 1.5f, 1f, 1.5f, 1.5f, 1f, 1f, 1.5f, 1f, 1f, 1f, 0.5f }, // Wind
+            new List<float> { 0.5f, 1.5f, 1f, 1f, 1f, 1.5f, 1.5f, 1f, 1f, 1.5f, 1f, 1f, 1.5f, 1f, 1f, 0.5f }, // Ice
+            new List<float> { 1f, 1f, 1f, 1f, 1.5f, 1f, 1f, 1f, 1f, 1f, 1f, 1.5f, 1.5f, 1.5f, 1.5f, 0.5f }, // Light
+            new List<float> { 1f, 1f, 1f, 1.5f, 1f, 1f, 1f, 1f, 1.5f, 1.5f, 1.5f, 1f, 1f, 1f, 1.5f, 0.5f }, // Dark
+            new List<float> { 1f, 0.5f, 0.5f, 1f, 1f, 1f, 1.5f, 0.5f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 0.5f }, // Fire/Wind
+            new List<float> { 0.5f, 1f, 0.5f, 1f, 1f, 0.5f, 1f, 1.5f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 0.5f }, // Wind/Ice
+            new List<float> { 0.5f, 0.5f, 1f, 1f, 1f, 1.5f, 0.5f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 0.5f }, // Ice/Fire
+            new List<float> { 1f, 0.5f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 0.5f, 1.5f, 1.5f, 1f, 1f, 1f, 0.5f }, // Light/Fire
+            new List<float> { 1f, 1f, 0.5f, 1f, 1f, 1f, 1f, 1f, 1.5f, 1f, 0.5f, 1f, 1.5f, 1f, 1f, 0.5f }, // Light/Wind
+            new List<float> { 0.5f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 0.5f, 1.5f, 1f, 1f, 1f, 1.5f, 1f, 0.5f }, // Light/Ice
+            new List<float> { 1f, 0.5f, 1f, 1f, 1f, 1f, 1f, 1f, 1.5f, 1f, 1f, 1f, 0.5f, 1.5f, 1f, 0.5f }, // Dark/Fire
+            new List<float> { 1f, 1f, 0.5f, 1f, 1f, 1f, 1f, 1f, 1f, 1.5f, 1f, 1.5f, 1f, 0.5f, 1f, 0.5f }, // Dark/Wind
+            new List<float> { 0.5f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1.5f, 0.5f, 1.5f, 1f, 1f, 0.5f}, // Dark/Ice
+            new List<float> { 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1.5f , 0.5f}, // Light/Dark
+            new List<float> {1.5f, 1.5f, 1.5f, 1.5f, 1.5f, 1.5f, 1.5f, 1.5f, 1.5f, 1.5f, 1.5f, 1.5f, 1.5f, 1.5f, 1.5f, 1.5f } //Debug
+    };
     public Action (int id, int who, int target, List<monster> monsters, List<Char> party, Item it)
     {
         actionId = id;
@@ -22,7 +39,7 @@ public class Action{
 
     public void animate(List<Animator> effect_monster, List<Animator> effect_nakama)
     {
-        if (actionId == 0)
+        if (actionId == 0) 
         {
             effect_monster[target].SetTrigger("attack");
             effect_nakama[who].SetTrigger("skill");
@@ -55,7 +72,7 @@ public class Action{
     {
         if (actionId == 0)
         {
-            monsters[target].HP -= 100;
+            monsters[target].HP -= (int)System.Math.Ceiling((teff[party[who].TYPE][monsters[target].TYPE] * (party[who].ATK) * Random.Range(85, 115) / 100 - monsters[target].DEF));
             //monsters[target].HP_bar.value = monsters[target].HP;
         }
         if (actionId == 1)
