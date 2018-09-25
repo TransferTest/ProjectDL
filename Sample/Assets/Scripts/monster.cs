@@ -12,6 +12,7 @@ public class monster {
     public int CRI;
     public int INT;
     public int DEF;
+    public int TYPE;
 
     public Button select;
     public Slider HP_bar;
@@ -35,6 +36,7 @@ public class monster {
         CRI = 10;
         INT = 1;
         DEF = 5;
+        TYPE = 0;
 
         attacked = false;
     }
