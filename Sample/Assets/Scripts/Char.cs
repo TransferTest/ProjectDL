@@ -15,12 +15,34 @@ public class Char{
     public int HP, MP;//character's current status
     public int HP_max, MP_max;//character's maximum status
     public int ATK, AGI, CRI, INT, DEF;//character's status
+    public int CMULT; // character's critical multiplier
     public int requiredMP, requiredHP;
     public int TYPE;
+    public List<int> Malkuth_ATK = new List<int> {0, 35, 36, 36, 36, 36, 36, 36, 36, 36, 37, 37, 37, 37, 38, 38, 38, 38, 38, 39, 40, 40, 40, 40, 40, 41, 41, 41, 41, 41, 41 };
+    public List<int> Malkuth_AGI = new List<int> {0, 36, 36, 37, 37, 38, 38, 39, 39, 39, 39, 39, 40, 40, 40, 41, 41, 42, 42, 42, 42, 42, 43, 43, 44, 44, 44, 45, 45, 46, 47 };
+    public List<int> Malkuth_CRI = new List<int> {0, 10, 10, 10, 10, 10, 11, 11, 11, 11, 11, 12, 12, 12, 12, 12, 13, 13, 13, 13, 13, 14, 14, 14, 14, 14, 15, 15, 15, 15, 15 };
+    public List<int> Malkuth_INT = new List<int> {0, 32, 32, 32, 32, 32, 32, 32, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 34, 34, 34, 34, 34, 35, 35, 35, 35, 35, 35, 35, 35 };
+    public List<int> Malkuth_DEF = new List<int> {0, 28, 28, 28, 29, 29, 29, 29, 29, 30, 30, 30, 30, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 32, 32, 32 };
+    public List<int> Yesod_ATK = new List<int> {0, 36, 37, 37, 38, 38, 38, 38, 39, 39, 40, 40, 40, 41, 41, 42, 42, 43, 43, 43, 44, 44, 44, 45, 46, 46, 46, 46, 47, 47, 48 };
+    public List<int> Yesod_AGI = new List<int> {0, 32, 32, 32, 32, 33, 33, 33, 33, 33, 33, 33, 33, 33, 34, 34, 34, 34, 34, 34, 34, 34, 34, 34, 34, 34, 34, 34, 34, 34, 34 };
+    public List<int> Yesod_CRI = new List<int> {0, 10, 10, 10, 10, 10, 11, 11, 11, 11, 11, 12, 12, 12, 12, 12, 13, 13, 13, 13, 13, 14, 14, 14, 14, 14, 15, 15, 15, 15, 15 };
+    public List<int> Yesod_INT = new List<int> {0, 28, 28, 28, 28, 28, 28, 28, 28, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 30, 30, 30, 30, 30, 30, 30, 30, 31, 31, 31, 31 };
+    public List<int> Yesod_DEF = new List<int> {0, 35, 35, 36, 36, 36, 36, 37, 37, 37, 37, 37, 38, 38, 38, 38, 38, 38, 39, 39, 39, 39, 40, 40, 40, 41, 41, 41, 41, 42, 42 };
+    public List<int> Hod_ATK = new List<int> {0, 32, 32, 32, 33, 33, 33, 33, 33, 33, 34, 34, 34, 34, 34, 34, 35, 35, 35, 35, 36, 36, 36, 37, 37, 37, 37, 37, 37, 37, 37 };
+    public List<int> Hod_AGI = new List<int> {0, 35, 36, 36, 36, 36, 36, 37, 37, 37, 37, 38, 38, 38, 39, 39, 39, 40, 40, 40, 40, 40, 41, 41, 41, 41, 42, 42, 42, 43, 43 };
+    public List<int> Hod_CRI = new List<int> {0, 15, 15, 16, 16, 16, 17, 17, 17, 18, 18, 18, 19, 19, 19, 20, 20, 20, 21, 21, 21, 22, 22, 22, 23, 23, 23, 24, 24, 24, 25 };
+    public List<int> Hod_INT = new List<int> {0, 31, 31, 31, 31, 32, 32, 32, 32, 32, 32, 32, 32, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 34, 34, 34, 34, 34, 34 };
+    public List<int> Hod_DEF = new List<int> {0, 28, 28, 28, 28, 28, 28, 28, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 30, 30, 30, 30, 30, 30, 30, 30, 30, 31, 31, 31 };
+    public List<int> Netzah_ATK = new List<int> {0, 29, 29, 30, 30, 30, 30, 30, 31, 31, 32, 32, 32, 32, 33, 33, 33, 33, 33, 33, 33, 33, 33, 34, 34, 34, 34, 34, 34, 34, 34 };
+    public List<int> Netzah_AGI = new List<int> {0, 33, 33, 33, 33, 33, 33, 34, 34, 34, 34, 34, 34, 35, 35, 35, 35, 35, 36, 36, 37, 37, 37, 37, 37, 37, 37, 37, 37, 38, 38 };
+    public List<int> Netzah_CRI = new List<int> {0, 10, 10, 10, 10, 10, 11, 11, 11, 11, 11, 12, 12, 12, 12, 12, 13, 13, 13, 13, 13, 14, 14, 14, 14, 14, 15, 15, 15, 15, 15 };
+    public List<int> Netzah_INT = new List<int> {0, 37, 38, 38, 38, 39, 39, 39, 40, 40, 40, 40, 41, 41, 41, 42, 42, 43, 43, 43, 43, 43, 44, 44, 45, 45, 45, 46, 47, 47, 48 };
+    public List<int> Netzah_DEF = new List<int> {0, 32, 32, 32, 32, 32, 32, 32, 32, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 34, 34, 34, 34, 34, 34, 35, 35, 35, 35, 35, 35 };
     //initiallize
     public Char ()
     {
         name = "dummy";//this character's name will be "dummy" if you don't set name
+        Lv = 1;
         id = 0;
         HP = 90;
         HP_max = 90;
@@ -33,11 +55,72 @@ public class Char{
         DEF = 10;
         INT = 10;
         CRI = 10;
+        CMULT = 0;
         requiredMP = 16;
         requiredHP = 0;
         TYPE = 15;
     }
+    public void reinitialize(bool lvlup) // This function will be called during character creation and after every level up
+    {
+        if (lvlup) { // If the reinitialize function is called by leveling up, set lvlup to true.
+            Lv += 1;
+        }
+        if (id ==0) // 말쿠트
+        {
+            name = "Malkuth";
+            HP = 170 + 11 * Lv;
+            HP_max= 170 + 11 * Lv;
+            MP = 67 + 3 * Lv;
+            MP_max = 67 + 3 * Lv;
+            ATK = Malkuth_ATK[Lv];
+            AGI = Malkuth_AGI[Lv];
+            DEF = Malkuth_DEF[Lv];
+            INT = Malkuth_INT[Lv];
+            CRI = Malkuth_CRI[Lv];
 
+        }
+        if (id == 1) // 예소드
+        {
+            name = "Yesod";
+            HP = 180 + 14 * Lv;
+            HP_max = 180 + 14 * Lv;
+            MP = 78 + 3 * Lv;
+            MP_max = 78 + 3 * Lv;
+            ATK = Yesod_ATK[Lv];
+            AGI = Yesod_AGI[Lv];
+            DEF = Yesod_DEF[Lv];
+            INT = Yesod_INT[Lv];
+            CRI = Yesod_CRI[Lv];
+
+        }
+        if (id == 2) // 호드
+        {
+            name = "Hod";
+            HP = 180 + 9 * Lv;
+            HP_max = 180 + 9 * Lv;
+            MP = 50 + 3 * Lv;
+            MP_max = 50 + 3 * Lv;
+            ATK = Hod_ATK[Lv];
+            AGI = Hod_AGI[Lv];
+            DEF = Hod_DEF[Lv];
+            INT = Hod_INT[Lv];
+            CRI = Hod_CRI[Lv];
+
+        }
+        if (id == 3) // 네짜흐
+        {
+            name = "Netzah";
+            HP = 170 + 12 * Lv;
+            HP_max = 170 + 12 * Lv;
+            MP = 90 + 3 * Lv;
+            MP_max = 90 + 3 * Lv;
+            ATK = Netzah_ATK[Lv];
+            AGI = Netzah_AGI[Lv];
+            DEF = Netzah_DEF[Lv];
+            INT = Netzah_INT[Lv];
+            CRI = Netzah_CRI[Lv];
+        }
+    }
     public int type_skill ()//해당 캐릭터의 스킬이 적 대상인지 아군 대상인지 논타겟인지 알려줍니다. 0->적, 1->아군, 2->논타겟
     {
         if (id == 0)

@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class monster {
     public int id;
-
+    public int Lv;
     public int HP;
     public int ATK;
     public int AGI;
@@ -13,6 +13,7 @@ public class monster {
     public int INT;
     public int DEF;
     public int TYPE;
+    public int CMULT;
 
     public Button select;
     public Slider HP_bar;
@@ -37,6 +38,8 @@ public class monster {
         INT = 1;
         DEF = 5;
         TYPE = 0;
+        Lv = 15;
+        CMULT = 0;
 
         attacked = false;
     }

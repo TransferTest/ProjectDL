@@ -72,7 +72,16 @@ public class Action{
     {
         if (actionId == 0)
         {
-            monsters[target].HP -= (int)System.Math.Ceiling((teff[party[who].TYPE][monsters[target].TYPE] * (party[who].ATK) * Random.Range(85, 115) / 100 - monsters[target].DEF));
+            int basedam= (int)System.Math.Ceiling((teff[party[who].TYPE][monsters[target].TYPE] * (party[who].ATK) * Random.Range(85, 115) / 100));
+            if (Random.Range(0, 100) >= 100 - party[who].CRI * party[who].Lv / monsters[target].Lv) // Critical Chance
+            {
+                basedam = (int)basedam * (15 + (10 * party[who].CMULT / 100)) / 10;
+            }
+            if (Random.Range(0, 1000) < System.Math.Min(18 * monsters[target].AGI / (monsters[target].AGI + party[who].AGI), 10)) // Evade
+            {
+                basedam = 0;
+            }
+            monsters[target].HP -= System.Math.Max(basedam -monsters[target].DEF,0);
             //monsters[target].HP_bar.value = monsters[target].HP;
         }
         if (actionId == 1)
