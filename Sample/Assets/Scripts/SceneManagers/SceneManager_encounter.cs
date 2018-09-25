@@ -232,7 +232,16 @@ public class SceneManager_encounter : MonoBehaviour {
             if (t > 1.3)
             {
                 matt = false;
-                party[mtar].HP -= (int) System.Math.Ceiling((teff[monsters[monster_attacking].TYPE][party[mtar].TYPE] *(monsters[monster_attacking].ATK)*Random.Range(85,115)/100- party[mtar].DEF));
+                int basedam= (int)System.Math.Ceiling((teff[monsters[monster_attacking].TYPE][party[mtar].TYPE] * (monsters[monster_attacking].ATK) * Random.Range(85, 115) / 100 ));
+                if (Random.Range(0,100)>= 100-monsters[monster_attacking].CRI* monsters[monster_attacking].Lv/ party[mtar].Lv) // Critical Chance
+                {
+                    basedam = (int) basedam * (15 + (10*monsters[monster_attacking].CMULT / 100))/10;
+                }
+                if (Random.Range(0,1000)<System.Math.Min(18* party[mtar].AGI/(party[mtar].AGI+ monsters[monster_attacking].AGI),10)) // Evade
+                {
+                    basedam = 0;
+                }
+                party[mtar].HP -= System.Math.Max(basedam - party[mtar].DEF, 0);
                 player_panels[mtar].setHP(party[mtar].HP); //Damage Formula
                 t = 0;
                 monster_attacking++;
