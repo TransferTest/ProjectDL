@@ -19,10 +19,10 @@ public class SceneManager_encounter : MonoBehaviour {
     public GameObject player_4;
     private PanelScript[] player_panels;
 
-    private Button panel_1;
-    private Button panel_2;
-    private Button panel_3;
-    private Button panel_4;
+    private Button panel_1; //Button for player 1
+    private Button panel_2; //Button for player 2
+    private Button panel_3; //Button for player 3
+    private Button panel_4; //Button for player 4
     public Button attackButton;
     public Button skillButton;
 
@@ -59,12 +59,13 @@ public class SceneManager_encounter : MonoBehaviour {
     public int num_party;
 
     private int monster_attacking;
-
+    List<List<float>> teff;
     private int curAct;
-    private bool ptarget;
-
+    private bool ptarget; //Checks whether player can currently be selected as a target.
+ //Type effectiveness
     // Use this for initialization
-    void Start () {
+    void Start()
+    {
         ptarget = false;
         curAct = 0;
         monster_attacking = 0;
@@ -131,10 +132,30 @@ public class SceneManager_encounter : MonoBehaviour {
             player_panels[i].setHP(party[i].HP);
             player_panels[i].setMP(party[i].MP);
         }
+        // The code below is a crude type effectiveness code
+        teff = new List<List<float>>() {
+            new List<float> { 1f, 0.5f, 1.5f, 1f, 1f, 1f, 1.5f, 1.5f, 1f, 1f, 1.5f, 1f, 1f, 1.5f, 1f, 0.5f }, // Fire
+            new List<float> { 1.5f, 1f, 0.5f, 1f, 1f, 1.5f, 1f, 1.5f, 1.5f, 1f, 1f, 1.5f, 1f, 1f, 1f, 0.5f }, // Wind
+            new List<float> { 0.5f, 1.5f, 1f, 1f, 1f, 1.5f, 1.5f, 1f, 1f, 1.5f, 1f, 1f, 1.5f, 1f, 1f, 0.5f }, // Ice
+            new List<float> { 1f, 1f, 1f, 1f, 1.5f, 1f, 1f, 1f, 1f, 1f, 1f, 1.5f, 1.5f, 1.5f, 1.5f, 0.5f }, // Light
+            new List<float> { 1f, 1f, 1f, 1.5f, 1f, 1f, 1f, 1f, 1.5f, 1.5f, 1.5f, 1f, 1f, 1f, 1.5f, 0.5f }, // Dark
+            new List<float> { 1f, 0.5f, 0.5f, 1f, 1f, 1f, 1.5f, 0.5f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 0.5f }, // Fire/Wind
+            new List<float> { 0.5f, 1f, 0.5f, 1f, 1f, 0.5f, 1f, 1.5f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 0.5f }, // Wind/Ice
+            new List<float> { 0.5f, 0.5f, 1f, 1f, 1f, 1.5f, 0.5f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 0.5f }, // Ice/Fire
+            new List<float> { 1f, 0.5f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 0.5f, 1.5f, 1.5f, 1f, 1f, 1f, 0.5f }, // Light/Fire
+            new List<float> { 1f, 1f, 0.5f, 1f, 1f, 1f, 1f, 1f, 1.5f, 1f, 0.5f, 1f, 1.5f, 1f, 1f, 0.5f }, // Light/Wind
+            new List<float> { 0.5f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 0.5f, 1.5f, 1f, 1f, 1f, 1.5f, 1f, 0.5f }, // Light/Ice
+            new List<float> { 1f, 0.5f, 1f, 1f, 1f, 1f, 1f, 1f, 1.5f, 1f, 1f, 1f, 0.5f, 1.5f, 1f, 0.5f }, // Dark/Fire
+            new List<float> { 1f, 1f, 0.5f, 1f, 1f, 1f, 1f, 1f, 1f, 1.5f, 1f, 1.5f, 1f, 0.5f, 1f, 0.5f }, // Dark/Wind
+            new List<float> { 0.5f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1.5f, 0.5f, 1.5f, 1f, 1f, 0.5f}, // Dark/Ice
+            new List<float> { 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1.5f , 0.5f}, // Light/Dark
+            new List<float> {1.5f, 1.5f, 1.5f, 1.5f, 1.5f, 1.5f, 1.5f, 1.5f, 1.5f, 1.5f, 1.5f, 1.5f, 1.5f, 1.5f, 1.5f, 1.5f } //Debug
+    };
+
     }
-	
-	// Update is called once per frame
-	void Update () {
+
+    // Update is called once per frame
+    void Update () {
         if (player_turn)
         {
             t += Time.deltaTime;
@@ -182,14 +203,14 @@ public class SceneManager_encounter : MonoBehaviour {
 
                 if (result)
                 {
-                    loadResult();
+                    loadResult(); // End of battle
                     return;
                 }
 
                 if (monster_attacking >= monsters.Count)
                 {
                     monster_turn = false;
-                    initiallizeInteractable();
+                    initiallizeInteractable(); // Back to player turn
                     t = 0;
                     return;
                 }
@@ -211,8 +232,8 @@ public class SceneManager_encounter : MonoBehaviour {
             if (t > 1.3)
             {
                 matt = false;
-                party[mtar].HP -= 10;
-                player_panels[mtar].setHP(party[mtar].HP);
+                party[mtar].HP -= (int) System.Math.Ceiling((teff[monsters[monster_attacking].TYPE][party[mtar].TYPE] *(monsters[monster_attacking].ATK)*Random.Range(85,115)/100- party[mtar].DEF));
+                player_panels[mtar].setHP(party[mtar].HP); //Damage Formula
                 t = 0;
                 monster_attacking++;
             }
@@ -307,7 +328,7 @@ public class SceneManager_encounter : MonoBehaviour {
     public void skill()
     {
         int type_skill = party[cur - 1].type_skill();
-        if (type_skill == 1)
+        if (type_skill == 1) //Heal, buff
         {
             ptarget = true;
             for (int i = 0; i < 4; i++)
@@ -315,7 +336,7 @@ public class SceneManager_encounter : MonoBehaviour {
                 panels[i].interactable = true;
             }
         }
-        else if (type_skill == 0)
+        else if (type_skill == 0) //Atk
         {
             ptarget = false;
             for (int i = 0; i < num_enemies; i++)
